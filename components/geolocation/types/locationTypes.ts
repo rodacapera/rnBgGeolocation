@@ -36,7 +36,7 @@ export interface Coords {
   floor: null;
 }
 
-export interface Extras {}
+export interface Extras { }
 
 export type GeoSwitchParams = {
   label?: string;
@@ -45,3 +45,5 @@ export type GeoSwitchParams = {
   trackColorTrue?: string;
   endPoint?: string;
 };
+
+export type User = { group: string, key: string, status: string }

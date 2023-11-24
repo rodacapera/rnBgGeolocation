@@ -1,9 +1,9 @@
 import React from 'react';
-import {Switch, Text, View} from 'react-native';
+import { Switch, Text, View } from 'react-native';
 import ResponseView from './components/ResponseView';
-import {BgMode} from './hook/BgMode';
-import {geolocationStyles} from './styles/geolocationStyles';
-import {GeoSwitchParams} from './types/locationTypes';
+import { BgMode } from './hook/BgMode';
+import { geolocationStyles } from './styles/geolocationStyles';
+import { GeoSwitchParams } from './types/locationTypes';
 
 const GeoSwitch = ({
   label,
@@ -12,11 +12,9 @@ const GeoSwitch = ({
   trackColorTrue,
   endPoint,
 }: GeoSwitchParams) => {
-  const {enabled, count, location, response, setEnabled} = BgMode({
-    endPoint,
+  const { enabled, count, location, response, setEnabled } = BgMode({
+    endPoint
   });
-
-  // console.log('location', location);
 
   return (
     <View style={geolocationStyles.contentSwitch}>
@@ -26,10 +24,10 @@ const GeoSwitch = ({
           value={enabled}
           onValueChange={setEnabled}
           thumbColor={thumbColor}
-          trackColor={{false: trackColorFalse, true: trackColorTrue}}
+          trackColor={{ false: trackColorFalse, true: trackColorTrue }}
         />
       </View>
-      <View style={geolocationStyles.responseViewContainer}>
+      {/* <View style={geolocationStyles.responseViewContainer}>
         {location && response && (
           <ResponseView
             count={count}
@@ -37,7 +35,7 @@ const GeoSwitch = ({
             response={response}
           />
         )}
-      </View>
+      </View> */}
     </View>
   );
 };

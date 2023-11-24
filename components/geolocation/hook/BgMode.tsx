@@ -4,14 +4,18 @@ import BackgroundGeolocation, {
   Location,
   Subscription,
 } from 'react-native-background-geolocation';
-import {Response} from '../types/http';
+import { Response } from '../types/http';
+import { Alert } from 'react-native';
+import { User } from '../types/locationTypes';
 
 let count = 0;
 
-const BgMode = ({endPoint}: {endPoint: string | undefined}) => {
+const BgMode = ({ endPoint }: { endPoint: string | undefined }) => {
   const [enabled, setEnabled] = React.useState(false);
+  const [idMac, setIdMac] = React.useState<string>();
   const [location, setLocation] = React.useState<Location>();
   const [response, setResponse] = React.useState<Response>();
+  const [user, setUser] = React.useState<User>();
 
   const enabledBg = async () => {
     await AsyncStorage.setItem('@bg_geo', JSON.stringify(true));
@@ -34,6 +38,13 @@ const BgMode = ({endPoint}: {endPoint: string | undefined}) => {
   const setMyLocation = React.useCallback(async () => {
     enabled ? enabledBg() : disabledBg();
   }, [enabled]);
+
+  const getUser = async () => {
+    const user = await AsyncStorage.getItem("@user");
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+  }
 
   React.useEffect(() => {
     /// 1.  Subscribe to events.
@@ -68,14 +79,14 @@ const BgMode = ({endPoint}: {endPoint: string | undefined}) => {
         httpEvent.responseText,
       );
       count++;
-      setResponse(JSON.parse(httpEvent.responseText));
+      //setResponse(JSON.parse(httpEvent.responseText));
     });
 
     /// 2. ready the plugin.
     BackgroundGeolocation.ready({
       // Geolocation Config
       desiredAccuracy: BackgroundGeolocation.DESIRED_ACCURACY_HIGH,
-      distanceFilter: 10,
+      distanceFilter: 5,
       // locationUpdateInterval: 1000,
       // allowIdenticalLocations: true,
       // stationaryRadius: 1,
@@ -83,32 +94,30 @@ const BgMode = ({endPoint}: {endPoint: string | undefined}) => {
       // Activity Recognition
       stopTimeout: 5,
       // Application config
-      debug: true, // <-- enable this hear sounds for background-geolocation life-cycle.
+      debug: false, // <-- enable this hear sounds for background-geolocation life-cycle.
       logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
       stopOnTerminate: false, // <-- Allow the background-service to continue tracking when user closes the app.
       startOnBoot: true, // <-- Auto start tracking when device is powered-up.
       // HTTP / SQLite config
-      url: endPoint,
+      //url: endPoint,
+      url: "http://35.209.193.223/conductores/ApiLocationDriver",
+      method: "POST",
       batchSync: true, // <-- [Default: false] Set true to sync locations to server in a single HTTP request.
       autoSync: true, // <-- [Default: true] Set true to sync each location to server as it arrives.
       autoSyncThreshold: 5,
       maxBatchSize: 50,
       headers: {
-        // <-- Optional HTTP headers
-        // 'X-FOO': 'bar',
+        'Accept': 'application/json',
+        //'Authorization': 'Token 6bc3d828bec3ab04d1ef550f1e2f8a6317a8f298',
+        'Authorization': `Token ${user?.key}`,
+        'Content-Type': 'application/json',
       },
       params: {
-        mac_address: 3, //pending
-        location: {
-          latitude: location?.coords.latitude,
-          longitude: location?.coords.longitude,
-        },
-        date: new Date(),
-        // <-- Optional HTTP params
-        // auth_token: 'maybe_your_server_authenticates_via_token_YES?',
+        'latitude': location?.coords.latitude,
+        'longitude': location?.coords.longitude,
       },
       locationsOrderDirection: 'DESC',
-      maxDaysToPersist: 14,
+      //maxDaysToPersist: 14,
     }).then(async state => {
       // setEnabled(state.enabled);
       console.debug(
@@ -135,10 +144,14 @@ const BgMode = ({endPoint}: {endPoint: string | undefined}) => {
   }, [getLocation]);
 
   React.useEffect(() => {
+    getUser();
+  }, [getLocation]);
+
+  React.useEffect(() => {
     setMyLocation();
   }, [setMyLocation]);
 
-  return {enabled, setEnabled, count, location, response};
+  return { enabled, setEnabled, count, location, response };
 };
 
-export {BgMode};
+export { BgMode };
