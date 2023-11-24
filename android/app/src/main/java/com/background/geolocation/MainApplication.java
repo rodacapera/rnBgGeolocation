@@ -1,4 +1,4 @@
-package com.geolocation;
+package com.background.geolocation;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

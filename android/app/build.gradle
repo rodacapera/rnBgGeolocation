@@ -78,9 +78,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.geolocation"
+    namespace "com.background.geolocation"
     defaultConfig {
-        applicationId "com.geolocation"
+        applicationId "com.background.geolocation"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
