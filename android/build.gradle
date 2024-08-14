@@ -1,14 +1,11 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     ext {
-        buildToolsVersion = "33.0.0"
-        minSdkVersion = 21
-        compileSdkVersion = 33
-        targetSdkVersion = 33
-
-        // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
-        ndkVersion = "23.1.7779620"
+        buildToolsVersion = "34.0.0"
+        minSdkVersion = 23
+        compileSdkVersion = 34
+        targetSdkVersion = 34
+        ndkVersion = "26.1.10909125"
+        kotlinVersion = "1.9.22"
         appCompatVersion 	= "1.4.2"      // Or higher.  Required for new AndroidX compatibility.
         googlePlayServicesLocationVersion = "21.0.1"  // Or higher.
     }
@@ -19,12 +16,15 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle")
         classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin")
     }
-    allprojects {
+     allprojects {
         repositories {
-            maven { url "${project(":react-native-background-fetch").projectDir}/libs" }
-            maven { url "${project(":react-native-background-geolocation").projectDir}/libs" }
-            maven { url 'https://developer.huawei.com/repo/' }
+        maven { url("${project(':react-native-background-geolocation').projectDir}/libs") }
+        maven { url 'https://developer.huawei.com/repo/' }
+        maven { url("${project(':react-native-background-fetch').projectDir}/libs") }
         }
     }
 }
+
+apply plugin: "com.facebook.react.rootproject"

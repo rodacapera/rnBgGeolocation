@@ -93,6 +93,7 @@ const BgMode = ({ endPoint }: { endPoint: string | undefined }) => {
       // showsBackgroundLocationIndicator: true,
       // Activity Recognition
       stopTimeout: 5,
+      
       // Application config
       debug: false, // <-- enable this hear sounds for background-geolocation life-cycle.
       logLevel: BackgroundGeolocation.LOG_LEVEL_VERBOSE,
@@ -100,7 +101,7 @@ const BgMode = ({ endPoint }: { endPoint: string | undefined }) => {
       startOnBoot: true, // <-- Auto start tracking when device is powered-up.
       // HTTP / SQLite config
       //url: endPoint,
-      url: "http://35.209.193.223/conductores/ApiLocationDriver",
+      url: "http://34.133.223.84/conductores/ApiLocationDriver",
       method: "POST",
       batchSync: true, // <-- [Default: false] Set true to sync locations to server in a single HTTP request.
       autoSync: true, // <-- [Default: true] Set true to sync each location to server as it arrives.
@@ -120,6 +121,11 @@ const BgMode = ({ endPoint }: { endPoint: string | undefined }) => {
       //maxDaysToPersist: 14,
     }).then(async state => {
       // setEnabled(state.enabled);
+      console.log(' ');
+      console.log('latitude ', location?.coords.latitude);
+      console.log('longitude ', location?.coords.longitude);
+      console.log('Token ', `Token ${user?.key}`);
+      console.log(' ');
       console.debug(
         '- BackgroundGeolocation is configured and ready: ',
         state.enabled,

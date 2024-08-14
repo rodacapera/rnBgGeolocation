@@ -20,7 +20,7 @@ const LoginHook = ({ setIsLogged }: { setIsLogged: (e: boolean) => void }) => {
 
     const handleLogin = async () => {
         try {
-            const response = await fetch('http://35.209.193.223/custom/login/', {
+            const response = await fetch('http://34.133.223.84/custom/login/', {
                 method: 'POST',
                 credentials: 'omit',
                 headers: {

@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface comgeolocatioTests : XCTestCase
+@interface rnBgGeolocationTests : XCTestCase
 
 @end
 
-@implementation comgeolocatioTests
+@implementation rnBgGeolocationTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {
